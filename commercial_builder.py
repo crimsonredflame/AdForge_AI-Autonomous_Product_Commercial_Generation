@@ -14,10 +14,8 @@ def generate_voiceover(target_path="voiceover.mp3"):
         
     print("🎙️ Generating cinematic voiceover via ElevenLabs...")
     
-    # ⚠️ PASTE YOUR ELEVENLABS API KEY HERE
     api_key = "sk_4c795a794e5962319805dd513d45bb732d020f6db29f7cb0" 
     
-    # Using 'Adam' - a deep, professional narration voice
     voice_id = "9TtqcvK8HhZVwt6fJY2Y"
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
     
@@ -26,9 +24,7 @@ def generate_voiceover(target_path="voiceover.mp3"):
         "Content-Type": "application/json",
         "xi-api-key": api_key
     }
-    
-    # The actual script the AI will read
-    # The actual script the AI will read
+
     data = {
         "text": "The Nike Revolution. Lightweight design. Maximum comfort. Step into the future.",
         "model_id": "eleven_multilingual_v2", # <-- This is the only line that changed
@@ -43,12 +39,12 @@ def generate_voiceover(target_path="voiceover.mp3"):
         if response.status_code == 200:
             with open(target_path, 'wb') as f:
                 f.write(response.content)
-            print("✅ Voiceover generated and saved locally!")
+            print(" Voiceover generated and saved locally!")
             return True
         else:
-            print(f"⚠️ ElevenLabs API Error {response.status_code}: {response.text}")
+            print(f" ElevenLabs API Error {response.status_code}: {response.text}")
     except Exception as e:
-        print(f"⚠️ Could not generate voiceover: {e}")
+        print(f" Could not generate voiceover: {e}")
     return False
 
 def build_commercial(v, p, f, o):
@@ -74,7 +70,6 @@ def build_commercial(v, p, f, o):
     # 5. Composite visual layers together
     fv = CompositeVideoClip([s, t, b, d])
 
-    # 6. Auto-fetch and inject background music
     # 6. Auto-fetch and inject Voiceover
     if generate_voiceover("voiceover.mp3"):
         print("🎙️ Syncing voiceover to the timeline...")
@@ -86,7 +81,7 @@ def build_commercial(v, p, f, o):
             
         fv = fv.set_audio(audio)
     else:
-        print("⚠️ Rendering silent video due to missing audio stream.")
+        print(" Rendering silent video due to missing audio stream.")
 
     # 7. Render final file
     fv.write_videofile(o, fps=8, codec="libx264", audio_codec="aac")
